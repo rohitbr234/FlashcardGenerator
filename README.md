@@ -78,11 +78,13 @@ File Format
 
 The generated TSV file has the following format:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML   
+\<language word> | \<language sentence> | \<English word> | \<English sentence>
 
 Example (for Tamil):
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   நூல்   நான் ஒரு நூல் வாங்கினேன்   book   I bought a book  வீடு   இது என் வீடு   house   This is my house  ...   `
+நூல்  |  நான் ஒரு நூல் வாங்கினேன்  |  book  |  I bought a book
+
+வீடு  |  இது என் வீடு  |  house  |  This is my house
 
 Notes
 -----
