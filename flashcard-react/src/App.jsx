@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './App.css';  // Assuming you add your CSS in this file
+import './App.css';
 
 function App() {
   const [language, setLanguage] = useState('');
+  const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Function to handle form submission and fetch flashcards
   const generateFlashcards = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      // Send language and request flashcards generation to backend
-      const response = await axios.post('http://localhost:5000/generate-flashcards', { language });
+      const response = await axios.post(
+        'http://localhost:5000/generate-flashcards',
+        { language, topic },
+        { responseType: 'blob' }   // ✅ treat response as file
+      );
 
-      // Create a Blob from the response and trigger download
       const blob = new Blob([response.data], { type: 'text/tab-separated-values' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -26,6 +28,7 @@ function App() {
       link.click();
       document.body.removeChild(link);
     } catch (err) {
+      console.error(err);
       setError('Error generating flashcards. Please try again.');
     } finally {
       setLoading(false);
@@ -35,18 +38,35 @@ function App() {
   return (
     <div className="App">
       <h1>Flashcard Generator</h1>
-      <p>Enter the language you want to generate flashcards for:</p>
+      <p>Generate Anki flashcards for a specific topic and language.</p>
 
-      <input 
-        type="text" 
-        value={language} 
-        onChange={(e) => setLanguage(e.target.value)} 
-        placeholder="Enter language (e.g., Tamil)"
-      />
+      <div className="input-section">
+        <input
+          type="text"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          placeholder="Enter language (e.g., Tamil)"
+          disabled={loading}
+        />
 
-      <button onClick={generateFlashcards} disabled={loading}>
-        {loading ? 'Generating...' : 'Generate Flashcards'}
-      </button>
+        <input
+          type="text"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+          placeholder="Enter topic (e.g., Nature, Food, Technology)"
+          disabled={loading}
+        />
+
+        <button onClick={generateFlashcards} disabled={loading || !language || !topic}>
+          {loading ? '⏳ Generating Flashcards...' : 'Generate Flashcards'}
+        </button>
+      </div>
+
+      {loading && (
+        <div className="loading-indicator">
+          <p>✨ Please wait — creating your flashcards with Gemini...</p>
+        </div>
+      )}
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
