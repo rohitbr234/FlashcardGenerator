@@ -1,126 +1,107 @@
 Flashcard Generator
 ===================
 
-A web application that generates Anki-compatible flashcards for learning vocabulary in various languages using the Google Generative AI (Gemini) model. The app allows users to specify a language and generates a downloadable TSV file containing 50 unique words, each accompanied by a sentence in the target language, along with their English translations.
+This project is a full-stack web application that generates Anki-compatible flashcards using Google's Gemini API. The backend is built with Node.js and Express, while the frontend is a simple React interface that allows users to specify a language and a topic for flashcard generation. The app then produces a downloadable TSV file containing word pairs and example sentences suitable for direct import into Anki.
 
 Features
 --------
 
-*   **Language Selection**: Users can input any language to generate flashcards (e.g., Tamil, Spanish, French).
+*   Generates 50 language-specific flashcards based on a user-provided topic.
     
-*   **TSV Output**: Generates a tab-separated values (TSV) file compatible with Anki for easy import.
+*   Uses Google Gemini 2.5 Flash for intelligent and contextual content generation.
     
-*   **AI-Powered**: Utilizes Google’s Gemini AI to create accurate and contextually relevant vocabulary and sentences.
+*   Provides downloadable tab-separated (TSV) output for easy import into Anki.
     
-*   **Simple UI**: A clean React-based frontend for user input and flashcard generation.
+*   Clean, responsive React frontend with loading indication and error handling.
     
-*   **Error Handling**: Displays clear error messages if the generation process fails.
-    
-
-Tech Stack
-----------
-
-*   **Backend**: Node.js, Express.js, Google Generative AI (Gemini)
-    
-*   **Frontend**: React, Axios
-    
-*   **Dependencies**:
-    
-    *   Backend: express, cors, axios, dotenv, @google/generative-ai, fs, path
-        
-    *   Frontend: react, axios
-        
-*   **File Format**: Generates TSV files for Anki compatibility
+*   Backend built with Express and integrated with Google’s Generative AI SDK.
     
 
-Prerequisites
--------------
+Project Structure
+-----------------
 
-*   Node.js (v16 or higher)
+The project is divided into two main parts:
+
+1.  **Backend (Node + Express)**Handles POST requests from the frontend, communicates with the Gemini API, processes AI responses, and returns the generated TSV file for download.
     
-*   npm or yarn
-    
-*   Google Generative AI API key (set up in a .env file)
+2.  **Frontend (React)**Provides a simple interface where users can input a language and topic, trigger flashcard generation, and download the resulting file.
     
 
-Installation
+Requirements
 ------------
 
-1.  git clone https://github.com/your-username/flashcard-generator.gitcd flashcard-generator
+*   Node.js (version 18 or higher recommended)
     
-2.  npm install
+*   npm (Node Package Manager)
     
-3.  cd clientnpm install
+*   A Google AI Studio API key with access to Gemini 2.5 models
     
-4.  API\_KEY=your\_google\_generative\_ai\_api\_keyPORT=5000
+
+Setup Instructions
+------------------
+
+1.  git clone
     
-5.  npm startThe backend server will run on http://localhost:5000 (or the port specified in .env).
+2.  cd FlashcardGenerator
     
-6.  npm startThe React app will run on http://localhost:3000 by default.
+3.  npm install
+    
+4.  API\_KEY=your\_google\_ai\_studio\_key
+    
+5.  node fcgen.jsThe server will start on port 5000 by default.
+    
+6.  npm startThe React app runs on port 3000 by default.
     
 
 Usage
 -----
 
-1.  Open the app in your browser (e.g., http://localhost:3000).
+1.  Open the React app in your browser (http://localhost:3000).
     
-2.  Enter the desired language (e.g., "Tamil", "Spanish") in the input field.
+2.  Enter a language (for example, Tamil, Spanish, or French).
     
-3.  Click the "Generate Flashcards" button.
+3.  Enter a topic (for example, Food, Nature, or Technology).
     
-4.  A TSV file (anki\_flashcards.tsv) will be downloaded containing 50 flashcards.
+4.  Click the "Generate Flashcards" button.
     
-5.  Import the TSV file into Anki to start learning!
+5.  Wait while the app communicates with the backend and the AI generates the flashcards.
     
-
-File Format
------------
-
-The generated TSV file has the following format:
-
-\<language word> | \<language sentence> | \<English word> | \<English sentence>
-
-Example (for Tamil):
-
-நூல்  |  நான் ஒரு நூல் வாங்கினேன்  |  book  |  I bought a book
-
-வீடு  |  இது என் வீடு  |  house  |  This is my house
-
-Notes
------
-
-*   Ensure the Google Generative AI API key is valid and has sufficient quota.
-    
-*   The backend removes the first and last lines of the AI response to clean up any extraneous content.
-    
-*   The generated TSV file is temporarily stored on the server and deleted after download.
-    
-*   The app assumes the backend is running on http://localhost:5000. Update the frontend Axios URL if using a different host or port.
+6.  Once ready, a TSV file named anki\_flashcards.tsv will automatically download.
     
 
-Troubleshooting
----------------
+How It Works
+------------
 
-*   **Error: "Language is required"**: Ensure you entered a language in the input field.
+1.  The React frontend collects user input (language and topic).
     
-*   **Error: "Error generating flashcards"**: Check your API key, internet connection, or server logs for details.
+2.  The data is sent via a POST request to the Express backend.
     
-*   **CORS Issues**: Ensure the backend is running and CORS is properly configured.
+3.  The backend constructs a natural-language prompt and sends it to the Gemini 2.5 Flash model.
+    
+4.  The Gemini API generates 50 word pairs, each including:
+    
+    *   A word in the selected language
+        
+    *   A sentence using that word
+        
+    *   The English translation of the word and sentence
+        
+5.  The backend formats the response into TSV format and sends it back to the frontend.
+    
+6.  The frontend triggers a file download so the user can save and import it into Anki.
     
 
-Future Improvements
--------------------
+Common Issues
+-------------
 
-*   Add support for selecting the number of flashcards.
+*   **\_\_dirname not defined**: Occurs when using ES modules in Node. Ensure fileURLToPath and path.dirname are used to define \_\_dirname.
     
-*   Include options for customizing sentence complexity.
+*   **404 from Gemini API**: Make sure you are using an API key from Google AI Studio, not MakerSuite, and that your model name is gemini-2.5-flash or gemini-2.5-pro.
     
-*   Add a preview of generated flashcards before download.
-    
-*   Support multiple AI models for flashcard generation.
+*   **CORS errors**: Confirm that the backend includes app.use(cors()) to allow requests from the frontend.
     
 
 License
 -------
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is open source and available under the MIT License.
