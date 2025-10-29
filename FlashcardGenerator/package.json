@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "flashcard-generator",
   "version": "1.0.0",
   "main": "fcgen.js",
@@ -10,8 +11,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@google/generative-ai": "^0.24.0",
+    "@google/generative-ai": "^0.24.1",
     "dotenv": "^16.4.7",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "node-fetch": "^3.3.2"
   }
 }
